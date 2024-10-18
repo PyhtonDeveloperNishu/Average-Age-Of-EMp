@@ -1,0 +1,17 @@
+.data_con{
+    padding: 20px;
+    box-shadow: 4px 4px 4px 4px  rgba(61, 49, 49, 0.2);
+    margin: 6px;
+}
+
+
+.add_btn{
+    background-color: #9ba7e59d;
+    margin-left: 5px;
+    border-radius: 4px;
+    cursor: pointer;
+    
+}
+.add_btn:hover{
+    color: rgb(224, 111, 192);
+}
