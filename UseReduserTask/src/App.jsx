@@ -8,7 +8,7 @@ function App() {
   
   
   
-  const masterData ={
+  const initialState ={
     employeeList : employeesJson,
     teamList : [],
     averageAge:0
@@ -16,29 +16,39 @@ function App() {
   
   const reducerFn = (state,action)=>{
     console.log("dispatxh triger",state,action);
-    if(action.action==='ADD_TO_TEAM'){
+    if(action.type==='ADD_TO_TEAM'){
       return{
         ...state,
         teamList:[...state.teamList,action.payload]
       }
+
     }else if(action.type==='REMOVE_FROM_TEAM_LIST'){
-       //
+       return{
+        ...state,
+        teamList:state.teamList.filter((team)=>team.id!==action.payload.id)
+       }
+
     }else if(action.type==='AVERAGE_AGE'){
-      const aveAge = (state.employeeList.reduce((acc,cur)=>acc+cur.age,0)/state.teamList.length).toFixed(2)
-      const stateCopy ={
-        ...state
-      }
-      stateCopy.averageAge=aveAge;
-      return stateCopy;
+      const aveAge = (state.teamList.reduce((acc,cur)=>acc+cur.age,0)/state.teamList.length).toFixed(2)
+      return{
+        ...state,
+        averageAge:aveAge,
+      };
+
     }else if(action.type==='SORT_BY_AGE'){
-       //
+      const sortedTeam =[...state.teamList].sort((a,b)=>a.age-b.age);
+      return{
+        ...state,
+        teamList:sortedTeam
+      }
+
     }else{
-        // dont any
+      //
     }
   }
 
 
-  const [state,dispatch] = useReducer(reducerFn,masterData)
+  const [state,dispatch] = useReducer(reducerFn,initialState)
   
 
 
@@ -52,6 +62,10 @@ function App() {
         gap:'8rem',
         alignItems:'center',
         justifyContent:'center',
+        flexDirection:'row',
+        flexWrap:'wrap',
+        padding:'2rem'
+       
 
        }}>
         <div style={{
@@ -60,9 +74,16 @@ function App() {
           <Employee employees={state.employeeList}   dispatch={dispatch} />
         </div>
         <div style={{
-          border :'2px Solid Black'
+          border :'2px Solid Black',
+          alignItems:'center',
+          justifyContent:'center',
+          width:'25vw',
+          height:'100vh',
+
         }}>
+          
           <Team  employees={state.teamList} dispatch={dispatch}  averageAge={state.averageAge}/>
+         
         </div>
       </div>
     </>
